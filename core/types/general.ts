@@ -6,6 +6,12 @@ export enum EResultTypes {
     ERROR = "Error"
 }
 
+export interface IResultError {
+    name: string,
+    message: string,
+    status: number
+}
+
 // Response Types ############################################################
 export interface IResponse {
     type: EResultTypes,
