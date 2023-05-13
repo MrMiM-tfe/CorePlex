@@ -66,7 +66,7 @@ export const sellerCheck = async (req: Request, res:Response, next: NextFunction
         if (result.type === EResultTypes.ERROR) return NoPermissionResponse(res)
     }
 
-    if (req.user?.role !== ERole.SELLER) return NoPermissionResponse(res, "you are not seller")
+    if (req.user?.role !== ERole.SELLER && req.user?.role !== ERole.ADMIN) return NoPermissionResponse(res, "you are not seller")
 
     next()
 }
