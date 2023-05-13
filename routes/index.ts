@@ -5,12 +5,12 @@ const router = express.Router()
 import coreRoutes from "../core/routes/"
 
 // import module routes
-import { routes as productRoutes } from "../modules/products"
+// import { routes as productRoutes } from "../modules/products"
 
 // use core routes
 router.use(coreRoutes)
 
 // use module routes
-router.use("/product", productRoutes)
+// router.use("/product", productRoutes)
 
 export default router
