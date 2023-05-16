@@ -8,13 +8,7 @@ import coreRoutes from "../core/routes/"
 router.use(coreRoutes)
 
 // use module
-//
-// Products:
-// import { routes as productRoutes } from "../modules/products"
-// router.use("/product", productRoutes)
-//
-// Articles:
-// import { routes as articleRoutes } from "../modules/articles"
-// router.use("/articles", articleRoutes)
+import module from "../modules"
+router.use(module.router)
 
 export default router
