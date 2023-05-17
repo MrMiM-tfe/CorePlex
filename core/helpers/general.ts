@@ -1,6 +1,7 @@
 import {IFullOptions} from "@/core/docs/core";
 import swaggerJSDoc from "swagger-jsdoc";
 import { EResultTypes, EStatusCodes, IPageData, IResultError, IResultType } from "../types/general";
+import mongoose, { isValidObjectId } from "mongoose";
 
 export function generatePaths(core :  IFullOptions, paths:Object) {
     for (let [key, path] of Object.entries(paths)) {
@@ -59,4 +60,44 @@ export const successResult = (data: Object | Object[], message:string = "success
         pageData
     }
     return res
+}
+
+export const findDocByIdentity = async (identity:string, model: mongoose.Model<any>) => {
+    const identityType = checkIdentity(identity)
+
+    try {
+        switch (identityType) {
+            case "slug":
+                return await model.findOne({ slug: identity });
+            case "id":
+                return await model.findById(identity);
+            default:
+                return null;
+        }
+    } catch (error) {
+        return null;
+    }
+}
+
+export function checkIdentity(identity: string) {
+    let identityType = "slug";
+    if (isValidObjectId(identity)) {
+        identityType = "id";
+    }
+
+    return identityType;
+}
+
+export function getPageData(page:number, limit:number, totalData: number) {
+    const totalPages = Math.ceil(totalData / limit);
+    const nextPage = page < totalPages ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null;
+
+    const pageData : IPageData = {
+        totalPages,
+        nextPage,
+        prevPage
+    }
+
+    return pageData
 }
