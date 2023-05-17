@@ -64,7 +64,7 @@ export const Result = {
 export function SendResponse(res: Response, result: IResultType, {message, status}: {
     message?: string,
     status?: EStatusCodes
-}) {
+} = {}) {
     const resp: IResponse = {
         ...result,
         message: message ?? result.message,
