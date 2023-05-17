@@ -1,4 +1,4 @@
-import { Response } from "express"
+import {Response} from "express"
 
 
 export enum EResultTypes {
@@ -28,18 +28,40 @@ export interface IPageData {
 }
 
 // Response Types ############################################################
-export interface IResponse {
-    type: EResultTypes,
-    message: string,
-    status: number
+export interface IResponse extends IResultType {
 }
 
-export const NoPermissionResponse = (res:Response, message: string = "no permission") => {
+export const NoPermissionResponse = (res: Response, message: string = "no permission") => {
     const resp: IResponse = {
         type: EResultTypes.ERROR,
         message,
-        status: 401
+        status: EStatusCodes.UNAUTHORIZED
     }
 
     return res.status(401).json(resp)
+}
+
+// Result types ##############################################################
+
+export interface IResultType {
+    status: EStatusCodes,
+    type: EResultTypes,
+    message?: string,
+    data?: Object | Object[],
+    pageData?: IPageData,
+    errors?: IResultError[]
+}
+
+export const SendResponse = (res: Response, result: IResultType, {message, status}: {
+    message?: string,
+    status?: EStatusCodes
+}) => {
+    const resp: IResponse = {
+        ...result,
+        message: message ?? result.message,
+        status: status ?? result.status,
+    }
+
+    return res.status(resp.status).json(resp)
+
 }
