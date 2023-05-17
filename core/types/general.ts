@@ -1,4 +1,6 @@
 import {Response} from "express"
+import { ECoreMSG } from "../messages/general"
+import { errorResult, successResult } from "../helpers/general"
 
 
 export enum EResultTypes {
@@ -13,6 +15,8 @@ export interface IResultError {
 }
 
 export enum EStatusCodes {
+    SUCCESS = 200,
+    SUCCESS_CREATE = 201,
     SERVER_ERROR = 500,
     CONFLICT = 409,
     BAD_REQUEST = 400,
@@ -50,6 +54,12 @@ export interface IResultType {
     data?: Object | Object[],
     pageData?: IPageData,
     errors?: IResultError[]
+}
+
+
+export const Result = {
+    error: errorResult,
+    success: successResult
 }
 
 export const SendResponse = (res: Response, result: IResultType, {message, status}: {
