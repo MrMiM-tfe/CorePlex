@@ -1,9 +1,9 @@
 import {IFullOptions} from "@/core/docs/core";
 import swaggerJSDoc from "swagger-jsdoc";
-import { EResultTypes, EStatusCodes, IPageData, IResultError, IResultType } from "../types/general";
-import mongoose, { isValidObjectId } from "mongoose";
+import {EResultTypes, EStatusCodes, IPageData, IResultError, IResultType} from "../types/general";
+import mongoose, {isValidObjectId} from "mongoose";
 
-export function generatePaths(core :  IFullOptions, paths:Object) {
+export function generatePaths(core: IFullOptions, paths: Object) {
     for (let [key, path] of Object.entries(paths)) {
         core.swaggerDefinition.paths = {
             ...core.swaggerDefinition.paths,
@@ -15,12 +15,13 @@ export function generatePaths(core :  IFullOptions, paths:Object) {
 export class Paths {
     root: string;
     paths: swaggerJSDoc.Paths;
-    constructor(root:string, paths:swaggerJSDoc.Paths) {
+
+    constructor(root: string, paths: swaggerJSDoc.Paths) {
         this.root = root
         this.paths = paths
     }
 
-    getPaths():swaggerJSDoc.Paths {
+    getPaths(): swaggerJSDoc.Paths {
         const paths = {} as swaggerJSDoc.Paths
 
         for (let [key, value] of Object.entries(this.paths)) {
@@ -34,13 +35,13 @@ export class Paths {
 
 // generate single error result
 export const errorResult = (name: string, message: string, status: EStatusCodes) => {
-    const error : IResultError = {
+    const error: IResultError = {
         name,
         message,
         status
     }
 
-    const res : IResultType = {
+    const res: IResultType = {
         type: EResultTypes.ERROR,
         message,
         status,
@@ -51,7 +52,7 @@ export const errorResult = (name: string, message: string, status: EStatusCodes)
 }
 
 // generate success result
-export const successResult = (data: Object | Object[], message:string = "success", status: EStatusCodes = EStatusCodes.SUCCESS, pageData?: IPageData) => {
+export const successResult = (data: Object | Object[], message: string = "success", status: EStatusCodes = EStatusCodes.SUCCESS, pageData?: IPageData) => {
     const res: IResultType = {
         type: EResultTypes.SUCCESS,
         status,
@@ -62,13 +63,13 @@ export const successResult = (data: Object | Object[], message:string = "success
     return res
 }
 
-export const findDocByIdentity = async (identity:string, model: mongoose.Model<any>) => {
+export const findDocByIdentity = async (identity: string, model: mongoose.Model<any>) => {
     const identityType = checkIdentity(identity)
 
     try {
         switch (identityType) {
             case "slug":
-                return await model.findOne({ slug: identity });
+                return await model.findOne({slug: identity});
             case "id":
                 return await model.findById(identity);
             default:
@@ -88,12 +89,12 @@ export function checkIdentity(identity: string) {
     return identityType;
 }
 
-export function getPageData(page:number, limit:number, totalData: number) {
+export function getPageData(page: number, limit: number, totalData: number) {
     const totalPages = Math.ceil(totalData / limit);
     const nextPage = page < totalPages ? page + 1 : null;
     const prevPage = page > 1 ? page - 1 : null;
 
-    const pageData : IPageData = {
+    const pageData: IPageData = {
         totalPages,
         nextPage,
         prevPage

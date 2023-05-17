@@ -1,57 +1,51 @@
 export interface Res {
-  type: string;
-  message: string;
-  status: number;
+    type: string;
+    message: string;
+    status: number;
 }
 
 export interface Content extends Res {
-  content: Object;
+    content: Object;
 }
 
 export interface Error extends Res {
-  info: string;
+    info: string;
 }
 
-export function GetRes(status: number,type: string = "Success", message: string = "success") : Res {
-    const res: Res = {
+export function GetRes(status: number, type: string = "Success", message: string = "success"): Res {
+    return {
         type,
         message,
         status
     }
-
-    return res
 }
 
 // create content response
 export function GetContent(
-  content: Object,
-  status: number = 200,
-  type: string = "Success",
-  message: string = "success"
-) : Content {
-  const res: Content = {
-    type,
-    content,
-    message,
-    status,
-  };
-
-  return res;
+    content: Object,
+    status: number = 200,
+    type: string = "Success",
+    message: string = "success"
+): Content {
+    return {
+        type,
+        content,
+        message,
+        status,
+    };
 }
 
 // create error response
 export function GetError(
-  message: string,
-  status: number = 400,
-  type: string = "Error",
-  info: string = "no info"
-) : Error {
-  const res: Error = {
-    type,
-    message,
-    status,
-    info,
-  };
-
-  return res;
+    message: string,
+    status: number = 400,
+    type: string = "Error",
+    info: string = "no info"
+): Error {
+    return {
+        type,
+        message,
+        status,
+        info,
+    };
 }

@@ -1,6 +1,5 @@
 import {Response} from "express"
-import { ECoreMSG } from "../messages/general"
-import { errorResult, successResult } from "../helpers/general"
+import {errorResult, successResult} from "../helpers/general"
 
 
 export enum EResultTypes {
@@ -62,16 +61,17 @@ export const Result = {
     success: successResult
 }
 
-export const SendResponse = (res: Response, result: IResultType, {message, status}: {
+export function SendResponse(res: Response, result: IResultType, {message, status}: {
     message?: string,
     status?: EStatusCodes
-}) => {
+}) {
     const resp: IResponse = {
         ...result,
         message: message ?? result.message,
-        status: status ?? result.status,
+        status: status ?? result.status
     }
 
     return res.status(resp.status).json(resp)
-
 }
+
+// Result types end

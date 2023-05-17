@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken"
-import { IUser } from "../types/user"
-import { IToken } from "../types/token"
-import { ESessionTypes, ISessionCreate } from "../types/session"
+import {IUser} from "../types/user"
+import {IToken} from "../types/token"
+import {ESessionTypes, ISessionCreate} from "../types/session"
 import Session from "../models/Session"
 import config from "../config"
 
-export const generateToken = async (userId:string, expires: number, type: ESessionTypes) => {
+export const generateToken = async (userId: string, expires: number, type: ESessionTypes) => {
 
     const secret = config.jwt.secret
 
@@ -47,11 +47,9 @@ const generateExpiration = (expirationDays: number) => {
 export const generateAuthToken = async (user: IUser) => {
     const accessTokenExpires = generateExpiration(7)
 
-    const accessToken = generateToken(
+    return generateToken(
         user._id.toString(),
         accessTokenExpires,
         ESessionTypes.ACCESS
     )
-
-    return accessToken
 }

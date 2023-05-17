@@ -1,7 +1,7 @@
 // signup messages
 export enum ESignupMSG {
     SUCCESS = "success full signup",
-    ROLE_RESTRCTION = "role restriction use can not use admin role",
+    ROLE_RESTRICTION = "role restriction use can not use admin role",
     INVALID_ROLE = "role must be (user/seller)",
     IN_USE_USERNAME = "in use username",
     IN_USE_EMAIL = "in use email",
@@ -14,7 +14,7 @@ export enum ESignupMSG {
 
 // login messages
 export enum ELoginMSG {
-    SUCCESS = "success full logedin",
+    SUCCESS = "success full logged in",
     EMPTY_USERNAME = "username field is empty",
     EMPTY_PASSWORD = "password field is empty",
     WRONG_INFO = "username or password is incorrect",
@@ -24,14 +24,14 @@ export enum ELoginMSG {
 
 // logout messages
 export enum ELogoutMSG {
-    SUCCESS = "loged out",
+    SUCCESS = "logged out",
     SERVER_ERROR = "server error",
     OTHER = "other"
 }
 
 // loginCheck messages
 export enum ELoginCheckMSG {
-    SUCCESS = "user is loged in",
+    SUCCESS = "user is logged in",
     TOKEN_NOT_FOUND = "token not found",
     TOKEN_NOT_VERIFIED = "token not verified",
     USER_NOT_FOUND = "The user belonging to this token does no longer exist",
