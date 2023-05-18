@@ -63,15 +63,15 @@ export const successResult = (data: Object | Object[], message: string = "succes
     return res
 }
 
-export const findDocByIdentity = async (identity: string, model: mongoose.Model<any>) => {
+export const findDocByIdentity = async (identity: string, model: mongoose.Model<any>, populate:string = "") => {
     const identityType = checkIdentity(identity)
 
     try {
         switch (identityType) {
             case "slug":
-                return await model.findOne({slug: identity});
+                return await model.findOne({slug: identity}).populate(populate);
             case "id":
-                return await model.findById(identity);
+                return await model.findById(identity).populate(populate);
             default:
                 return null;
         }
