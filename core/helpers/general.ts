@@ -102,3 +102,8 @@ export function getPageData(page: number, limit: number, totalData: number) {
 
     return pageData
 }
+
+export function ConvertToNaturalNumber(num: number) {
+    num = Math.abs(Math.floor(num))
+    return num === 0 ? 1 : num
+}
