@@ -2,6 +2,7 @@ import {IFullOptions} from "@/core/docs/core";
 import swaggerJSDoc from "swagger-jsdoc";
 import {EResultTypes, EStatusCodes, IPageData, IResultError, IResultType} from "../types/general";
 import mongoose, {isValidObjectId} from "mongoose";
+import slugify from "slugify";
 
 export function generatePaths(core: IFullOptions, paths: Object) {
     for (let [key, path] of Object.entries(paths)) {
@@ -106,4 +107,44 @@ export function getPageData(page: number, limit: number, totalData: number) {
 export function ConvertToNaturalNumber(num: number) {
     num = Math.abs(Math.floor(num))
     return num === 0 ? 1 : num
+}
+
+export async function GenerateSlug(doc: any, model: mongoose.Model<any, {}, {}, {}, any>) {
+    // check if slug is modified by user or not
+    if (!ValidateSlug(doc.slug)) {
+        doc.slug = slugify(doc.name)
+    }
+
+    const similar = await model.findOne({slug: doc.slug})
+    if (!similar) return doc.slug as string
+
+    const regexPattern = new RegExp(`^${doc.slug}-\\d+$`)
+
+    const data = (await model.find({slug: regexPattern}).sort("-slug").limit(1))[0]
+    
+    if (data) {
+        // get latest counter number
+        const count = data.slug.split("-").pop()
+
+        // generate next counter number
+        const StrNumber = !isNaN(Number(count)) ? (Number(count) + 1).toString() : "1"
+
+        // concatenate slug with number
+        doc.slug = doc.slug + "-" + StrNumber
+    }else {
+        doc.slug = doc.slug + "-1"
+    }
+
+    return doc.slug as string
+}
+
+/**
+ * @description validate slug
+ */
+export function ValidateSlug(slug: string) {
+    
+    if (!slug) return false
+    
+    const regexExp = /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/;
+    return regexExp.test(slug)
 }
