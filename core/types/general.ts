@@ -1,5 +1,5 @@
 import {Response} from "express"
-import {errorResult, successResult} from "../helpers/general"
+import {errorResult, errorsResult, successResult} from "../helpers/general"
 
 
 export enum EResultTypes {
@@ -50,7 +50,7 @@ export interface IResultType {
     status: EStatusCodes,
     type: EResultTypes,
     message?: string,
-    data?: Object | Object[],
+    data?: any,
     pageData?: IPageData,
     errors?: IResultError[]
 }
@@ -58,6 +58,7 @@ export interface IResultType {
 
 export const Result = {
     error: errorResult,
+    errors: errorsResult,
     success: successResult
 }
 

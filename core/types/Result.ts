@@ -1,23 +1,14 @@
-import { EResultTypes, EStatusCodes, IPageData, IResultError } from "./general";
+import { IResultType, EResultTypes, EStatusCodes, IPageData, IResultError } from "./general";
 
-export interface IResult {
-    type: EResultTypes;
-    status: number;
-    message?: string;
-    errors?: IResultError[];
-    data?: any;
-    pageDate?: IPageData;
-}
-
-export class Result<ResultType, DataType, MSGType> {
+export class TypedResult<ResultType, DataType, MSGType> {
 
     success(
         data: DataType,
         message: MSGType,
-        status: EStatusCodes.SUCCESS,
+        status: EStatusCodes = EStatusCodes.SUCCESS,
     
     ) {
-        const res: ResultType | IResult = {
+        const res: ResultType | IResultType = {
             type: EResultTypes.SUCCESS,
             status,
             data,
@@ -34,7 +25,7 @@ export class Result<ResultType, DataType, MSGType> {
     ) {
         const errors = Array.isArray(errs) ? errs : [errs];
 
-        const res: ResultType | IResult = {
+        const res: ResultType | IResultType = {
             type: EResultTypes.ERROR,
             errors,
             status,
@@ -57,7 +48,7 @@ export class Result<ResultType, DataType, MSGType> {
         }
 
         // generate error
-        const res: ResultType | IResult = {
+        const res: ResultType | IResultType = {
             type: EResultTypes.ERROR,
             status: error.status,
             errors: [error],

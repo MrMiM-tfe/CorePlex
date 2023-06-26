@@ -1,8 +1,9 @@
 import {IFullOptions} from "@/core/docs/core";
 import swaggerJSDoc from "swagger-jsdoc";
-import {EResultTypes, EStatusCodes, IPageData, IResultError, IResultType} from "../types/general";
+import {EResultTypes, EStatusCodes, IPageData, IResultError, IResultType, Result} from "../types/general";
 import mongoose, {isValidObjectId} from "mongoose";
 import slugify from "slugify";
+import { TypedResult } from "../types/Result";
 
 export function generatePaths(core: IFullOptions, paths: Object) {
     for (let [key, path] of Object.entries(paths)) {
@@ -50,6 +51,19 @@ export const errorResult = (name: string, message: string, status: EStatusCodes)
     }
 
     return res
+}
+
+// generate errors result
+export const errorsResult = (errs: IResultError[] | IResultError, status: EStatusCodes) => {
+    const errors = Array.isArray(errs) ? errs : [errs];
+
+    const res: IResultType = {
+        type: EResultTypes.ERROR,
+        errors,
+        status,
+    };
+
+    return res;
 }
 
 // generate success result
@@ -147,4 +161,45 @@ export function ValidateSlug(slug: string) {
     
     const regexExp = /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/;
     return regexExp.test(slug)
+}
+
+export function handleModelErrors(error: any) {
+    console.log(error);
+
+
+    if (error.name === "ValidationError") {
+        let errors: IResultError[] = [];
+
+        Object.keys(error.errors).forEach((key) => {
+            let err: IResultError = {
+                name: key,
+                message: error.errors[key].message,
+                status: EStatusCodes.CONFLICT,
+            };
+            errors.push(err);
+        });
+
+        return Result.errors(errors, EStatusCodes.CONFLICT);
+    } else if (error.code === 11000) {
+        let errors: IResultError[] = [];
+
+        Object.keys(error.keyValue).forEach((key) => {
+            let err: IResultError = {
+                name: key,
+                message: `'${key}' must be unique. value of '${error.keyValue[key]}' is in use`,
+                status: EStatusCodes.CONFLICT,
+            };
+            errors.push(err);
+        });
+
+        return Result.errors(errors, EStatusCodes.CONFLICT);
+    }
+
+    const err: IResultError = {
+        name: "Server Error",
+        message: "some thing went wrong",
+        status: EStatusCodes.SERVER_ERROR,
+    };
+
+    return Result.errors(err, err.status);
 }
