@@ -5,10 +5,20 @@ import docs from "@/core/docs/core"
 
 let docList: { [p: string]: any } = {};
 
-// Products:
-import product from "./products"
-router.use("/product", product.routes)
-docList["product"] = product.docs.paths
+// safe imports
+(async() => {
+    
+    // Products:
+    try {
+        const product = await import("./products")
+        
+        router.use("/product", product.default.routes)
+        docList["product"] = product.default.docs.paths
+    } catch (error) {
+        console.log(error);
+    }
+
+})()
 
 generatePaths(docs, docList)
 export default {router, docs}

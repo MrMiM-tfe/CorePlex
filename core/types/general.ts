@@ -1,11 +1,5 @@
-import {Response, Router} from "express"
+import {Response} from "express"
 import {errorResult, errorsResult, successResult} from "../helpers/general"
-import swaggerJSDoc from "swagger-jsdoc";
-
-export interface IModule {
-    routes: Router,
-    docs: {paths: swaggerJSDoc.Paths}
-}
 
 export enum EResultTypes {
     SUCCESS = "Success",
