@@ -1,7 +1,7 @@
 import {IFullOptions} from "@/core/docs/core";
 import swaggerJSDoc from "swagger-jsdoc";
 import {EResultTypes, EStatusCodes, IPageData, IResultError, IResultType, Result} from "../types/general";
-import mongoose, {isValidObjectId} from "mongoose";
+import mongoose, {Document, Types, isValidObjectId} from "mongoose";
 import slugify from "slugify";
 import { TypedResult } from "../types/Result";
 
@@ -78,7 +78,7 @@ export const successResult = (data: Object | Object[], message: string = "succes
     return res
 }
 
-export const findDocByIdentity = async (identity: string, model: mongoose.Model<any>, populate:string = "") => {
+export const findDocByIdentity = async <ModelType>(identity: string, model: mongoose.Model<ModelType>, populate:string = "") => {
     const identityType = checkIdentity(identity)
 
     try {
