@@ -18,6 +18,16 @@ let docList: { [p: string]: any } = {};
         console.log(error);
     }
 
+    // Products:
+    try {
+        const article = await import("./articles")
+        
+        router.use("/article", article.default.routes)
+        docList["article"] = article.default.docs.paths
+    } catch (error) {
+        console.log(error);
+    }
+
 })()
 
 generatePaths(docs, docList)
