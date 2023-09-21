@@ -1,6 +1,8 @@
 # CorePlex
 fully modular rest API
 
+![Alt text](https://github.com/MrMiM-tfe/CorePlex/blob/master/Diagram.drawio.svg)
+
 ## How to use modules
 To use module you must clone module repositorie to `modules` folder in main code and then import them in loader.
 
