@@ -1,4 +1,5 @@
 # CorePlex
+fully modular rest API
 
 ## How to use modules
 To use module you must clone module repositorie to `modules` folder in main code and then import them in loader.
