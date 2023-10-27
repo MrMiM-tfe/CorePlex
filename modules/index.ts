@@ -6,7 +6,7 @@ import docs from "@/core/docs/core"
 let docList: { [p: string]: any } = {};
 
 // safe imports
-(async() => {
+const init = async () => {
     
     // Products:
     try {
@@ -18,7 +18,7 @@ let docList: { [p: string]: any } = {};
         console.log(error);
     }
 
-    // Products:
+    // Articles:
     try {
         const article = await import("./articles")
         
@@ -27,8 +27,9 @@ let docList: { [p: string]: any } = {};
     } catch (error) {
         console.log(error);
     }
+    
+    generatePaths(docs, docList)
+    return {router, docs}
+}
 
-})()
-
-generatePaths(docs, docList)
-export default {router, docs}
+export default init

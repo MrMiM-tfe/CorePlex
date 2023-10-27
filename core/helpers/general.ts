@@ -5,7 +5,7 @@ import mongoose, {Document, Types, isValidObjectId} from "mongoose";
 import slugify from "slugify";
 import { TypedResult } from "../types/Result";
 
-export function generatePaths(core: IFullOptions, paths: Object) {
+export function generatePaths(core: IFullOptions, paths: Object) {    
     for (let [key, path] of Object.entries(paths)) {
         core.swaggerDefinition.paths = {
             ...core.swaggerDefinition.paths,
