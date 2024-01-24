@@ -3,7 +3,8 @@ import { Types } from "mongoose";
 export enum ERole {
     USER = "user",
     ADMIN = "admin",
-    SELLER = "seller"
+    SELLER = "seller",
+    GEST = "gest",
 }
 
 export interface IAddress {
